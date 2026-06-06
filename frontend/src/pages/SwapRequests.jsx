@@ -1,0 +1,1 @@
+export default function SwapRequests() { return <div className="glass-panel" style={{padding: '2rem'}}><h1>SwapRequests Page</h1></div>; }

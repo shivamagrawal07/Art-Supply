@@ -1,0 +1,1 @@
+export default function Marketplace() { return <div className="glass-panel" style={{padding: '2rem'}}><h1>Marketplace Page</h1></div>; }

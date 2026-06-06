@@ -1,0 +1,1 @@
+export default function Home() { return <div className="glass-panel" style={{padding: '2rem'}}><h1>Home Page</h1></div>; }

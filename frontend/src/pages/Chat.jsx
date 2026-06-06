@@ -1,0 +1,1 @@
+export default function Chat() { return <div className="glass-panel" style={{padding: '2rem'}}><h1>Chat Page</h1></div>; }

@@ -1,0 +1,1 @@
+export default function Dashboard() { return <div className="glass-panel" style={{padding: '2rem'}}><h1>Dashboard Page</h1></div>; }

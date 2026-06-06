@@ -1,0 +1,1 @@
+export default function Register() { return <div className="glass-panel" style={{padding: '2rem'}}><h1>Register Page</h1></div>; }
