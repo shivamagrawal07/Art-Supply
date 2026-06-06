@@ -8,7 +8,7 @@ export default function SwapRequests() {
   useEffect(() => {
     const fetchSwaps = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/swaps', {
+        const res = await axios.get('/api/swaps', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         setSwaps(res.data);
@@ -21,7 +21,7 @@ export default function SwapRequests() {
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/swaps/${id}`, { status }, {
+      await axios.put(`/api/swaps/${id}`, { status }, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       // Refresh list

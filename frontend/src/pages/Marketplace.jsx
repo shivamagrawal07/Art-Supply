@@ -9,7 +9,7 @@ export default function Marketplace() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/listings');
+        const res = await axios.get('/api/listings');
         setListings(res.data);
       } catch (err) {
         console.error(err);

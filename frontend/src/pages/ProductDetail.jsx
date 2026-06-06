@@ -11,7 +11,7 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/listings/${id}`);
+        const res = await axios.get(`/api/listings/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error(err);
@@ -25,7 +25,7 @@ export default function ProductDetail() {
     // Simplified: Just auto-creating a swap request for demo purposes
     // In a real app, this would open a modal to select which of YOUR items to offer
     try {
-      await axios.post('http://localhost:5000/api/swaps', {
+      await axios.post('/api/swaps', {
         targetListingId: product._id,
         offeredListingId: product._id, // Using same item as placeholder
         message: 'I am interested in swapping for this!'

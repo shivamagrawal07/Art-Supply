@@ -10,7 +10,7 @@ export default function Dashboard() {
     // For now we'll fetch all and filter client side
     const fetchMyListings = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/listings');
+        const res = await axios.get('/api/listings');
         const mine = res.data.filter(l => l.seller._id === user._id || l.seller === user._id);
         setMyListings(mine);
       } catch (err) {
