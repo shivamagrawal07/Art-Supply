@@ -25,6 +25,18 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'API is running...' });
 });
 
+const path = require('path');
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, '../', 'frontend', 'dist', 'index.html'))
+  );
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running in development mode');
+  });
+}
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
