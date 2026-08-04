@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import api from '../utils/api';
 import { Search } from 'lucide-react';
 
 export default function Marketplace() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialQuery = searchParams.get('q') || '';
+
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialQuery);
 
   useEffect(() => {
-    fetchListings();
-  }, []);
+    fetchListings(initialQuery);
+  }, [initialQuery]);
 
   const fetchListings = async (searchQuery = '') => {
     try {

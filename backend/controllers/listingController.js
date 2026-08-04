@@ -7,7 +7,12 @@ const getListings = async (req, res) => {
     
     if (category) query.category = category;
     if (condition) query.condition = condition;
-    if (search) query.title = { $regex: search, $options: 'i' };
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } }
+      ];
+    }
 
     const listings = await Listing.find(query).populate('seller', 'name location');
     res.json(listings);

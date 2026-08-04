@@ -1,9 +1,20 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Palette, LogOut, User as UserIcon, MessageSquare, Repeat } from 'lucide-react';
+import { Palette, LogOut, User as UserIcon, MessageSquare, Repeat, Search } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/marketplace?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
+    }
+  };
 
   return (
     <nav className="glass-panel" style={{ position: 'sticky', top: '1rem', zIndex: 100, margin: '1rem 1.5rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -12,6 +23,17 @@ export default function Navbar() {
         ArtSwap
       </Link>
       
+      <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', background: 'var(--surface-color)', borderRadius: '20px', padding: '0.35rem 1rem', flex: '0 1 300px' }}>
+        <Search size={18} color="var(--text-muted)" style={{ marginRight: '0.5rem' }} />
+        <input 
+          type="text" 
+          placeholder="Search supplies..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ background: 'transparent', border: 'none', color: 'var(--text-color)', width: '100%', outline: 'none', fontSize: '0.95rem' }}
+        />
+      </form>
+
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
         <Link to="/marketplace" style={{ fontWeight: 500 }}>Marketplace</Link>
         
