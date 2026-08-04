@@ -10,14 +10,6 @@ export default function SwapRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchRequests();
-  }, [user, navigate]);
-
   const fetchRequests = async () => {
     try {
       const res = await api.get('/swaps');
@@ -28,6 +20,16 @@ export default function SwapRequests() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchRequests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, navigate]);
+
 
   const handleUpdateStatus = async (id, status) => {
     try {

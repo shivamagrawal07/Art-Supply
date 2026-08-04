@@ -13,23 +13,6 @@ export default function Chat() {
   const [targetUser, setTargetUser] = useState(location.state?.targetUser || null);
   const messagesEndRef = useRef(null);
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    if (targetUser) {
-      fetchMessages();
-      // Polling every 5 seconds for new messages
-      const interval = setInterval(fetchMessages, 5000);
-      return () => clearInterval(interval);
-    }
-  }, [user, targetUser, navigate]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   const fetchMessages = async () => {
     if (!targetUser?._id) return;
     try {
@@ -44,6 +27,26 @@ export default function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    if (targetUser) {
+      fetchMessages();
+      // Polling every 5 seconds for new messages
+      const interval = setInterval(fetchMessages, 5000);
+      return () => clearInterval(interval);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, targetUser, navigate]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !targetUser) return;
@@ -55,7 +58,7 @@ export default function Chat() {
       });
       setNewMessage('');
       fetchMessages();
-    } catch (error) {
+    } catch (err) {
       alert('Error sending message');
     }
   };

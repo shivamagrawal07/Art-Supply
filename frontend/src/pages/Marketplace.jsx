@@ -12,10 +12,6 @@ export default function Marketplace() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(initialQuery);
 
-  useEffect(() => {
-    fetchListings(initialQuery);
-  }, [initialQuery]);
-
   const fetchListings = async (searchQuery = '') => {
     try {
       setLoading(true);
@@ -27,6 +23,12 @@ export default function Marketplace() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchListings(initialQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery]);
+
 
   const handleSearch = (e) => {
     e.preventDefault();

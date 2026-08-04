@@ -17,10 +17,6 @@ export default function ProductDetail() {
   const [selectedOffer, setSelectedOffer] = useState('');
   const [swapMessage, setSwapMessage] = useState('');
 
-  useEffect(() => {
-    fetchListingDetails();
-  }, [id]);
-
   const fetchListingDetails = async () => {
     try {
       const res = await api.get(`/listings/${id}`);
@@ -31,6 +27,12 @@ export default function ProductDetail() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchListingDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
 
   const handleOpenSwap = async () => {
     if (!user) return navigate('/login');

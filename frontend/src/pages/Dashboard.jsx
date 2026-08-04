@@ -15,14 +15,6 @@ export default function Dashboard() {
     title: '', description: '', category: '', condition: 'New', price: '', imageUrl: ''
   });
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchMyListings();
-  }, [user, navigate]);
-
   const fetchMyListings = async () => {
     try {
       const res = await api.get('/listings');
@@ -33,6 +25,16 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchMyListings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, navigate]);
+
 
   const handleCreateListing = async (e) => {
     e.preventDefault();
