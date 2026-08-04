@@ -70,8 +70,8 @@ export default function Home() {
                   <Icon size={36} color={cat.color} />
                 </div>
                 <div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-color)', marginBottom: '0.25rem' }}>{cat.name}</div>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{cat.desc}</div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'aliceblue', marginBottom: '0.25rem' }}>{cat.name}</div>
+                  <div style={{ fontSize: '0.85rem', color: 'lightblue' }}>{cat.desc}</div>
                 </div>
               </button>
             );
@@ -82,24 +82,24 @@ export default function Home() {
       {/* Features Section */}
       <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', padding: '0 1rem' }}>
         <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
-          <div style={{ background: 'var(--surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-            <Palette size={32} color="var(--primary-color)" />
+          <div style={{ background: 'var(--bg-surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <Palette size={32} color="var(--accent-purple)" />
           </div>
           <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>Find Rare Materials</h3>
           <p style={{ color: 'var(--text-muted)' }}>Discover unique, vintage, or specialized art supplies from other creators.</p>
         </div>
         
         <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
-          <div style={{ background: 'var(--surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-            <Share2 size={32} color="var(--secondary-color)" />
+          <div style={{ background: 'var(--bg-surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <Share2 size={32} color="var(--accent-pink)" />
           </div>
           <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>Direct Swaps</h3>
           <p style={{ color: 'var(--text-muted)' }}>Propose trades directly with other artists. No money needs to change hands.</p>
         </div>
 
         <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
-          <div style={{ background: 'var(--surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-            <Users size={32} color="var(--success-color)" />
+          <div style={{ background: 'var(--bg-surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <Users size={32} color="var(--success)" />
           </div>
           <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>Connect Locally</h3>
           <p style={{ color: 'var(--text-muted)' }}>Meet up with local artists in your area to exchange supplies and ideas.</p>
