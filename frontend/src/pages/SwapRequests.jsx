@@ -1,84 +1,124 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+import api from '../utils/api';
+import { Check, X } from 'lucide-react';
 
 export default function SwapRequests() {
-  const [swaps, setSwaps] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSwaps = async () => {
-      try {
-        const res = await axios.get('/api/swaps', {
-          headers: { Authorization: `Bearer ${user.token}` }
-        });
-        setSwaps(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    if (user) fetchSwaps();
-  }, [user]);
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchRequests();
+  }, [user, navigate]);
 
-  const handleUpdateStatus = async (id, status) => {
+  const fetchRequests = async () => {
     try {
-      await axios.put(`/api/swaps/${id}`, { status }, {
-        headers: { Authorization: `Bearer ${user.token}` }
-      });
-      // Refresh list
-      setSwaps(swaps.map(s => s._id === id ? { ...s, status } : s));
-    } catch (err) {
-      alert(err.response?.data?.message || 'Update failed');
+      const res = await api.get('/swaps');
+      setRequests(res.data);
+    } catch (error) {
+      console.error('Error fetching swaps:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (!user) return <div style={{textAlign: 'center', padding: '4rem'}}>Please log in.</div>;
+  const handleUpdateStatus = async (id, status) => {
+    try {
+      await api.put(`/swaps/${id}`, { status });
+      fetchRequests();
+    } catch (error) {
+      alert('Error updating status: ' + (error.response?.data?.message || error.message));
+    }
+  };
+
+  if (!user) return null;
+
+  const incomingRequests = requests.filter(r => r.receiver._id === user._id);
+  const outgoingRequests = requests.filter(r => r.requestor._id === user._id);
 
   return (
     <div className="animate-fade-in">
-      <h1 style={{ marginBottom: '2rem' }}>Swap Requests</h1>
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {swaps.length === 0 ? (
-          <div className="glass-panel" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            No swap requests yet. Browse the marketplace to propose a trade!
-          </div>
-        ) : (
-          swaps.map(swap => (
-            <div key={swap._id} className="glass-panel" style={{ padding: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>From: <strong style={{color: 'var(--text-main)'}}>{swap.requestor?.name}</strong></span>
-                <span style={{ padding: '0.3rem 0.8rem', borderRadius: '15px', fontSize: '0.85rem', fontWeight: 'bold', background: swap.status === 'pending' ? 'rgba(234, 179, 8, 0.2)' : swap.status === 'accepted' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)', color: swap.status === 'pending' ? '#eab308' : swap.status === 'accepted' ? 'var(--success-color)' : 'var(--danger-color)' }}>
-                  {swap.status.toUpperCase()}
-                </span>
-              </div>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '2rem', alignItems: 'center' }}>
-                <div>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>They Want:</p>
-                  <h3 style={{ margin: 0 }}>{swap.targetListing?.title || 'Listing Removed'}</h3>
-                </div>
-                <div style={{ fontSize: '2rem', color: 'var(--primary-color)' }}>⇄</div>
-                <div>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>They Offer:</p>
-                  <h3 style={{ margin: 0 }}>{swap.offeredListing?.title || 'Listing Removed'}</h3>
-                </div>
-              </div>
+      <h2 style={{ marginBottom: '2rem' }}>Swap Requests</h2>
 
-              {swap.message && (
-                <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-                  <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--text-muted)' }}>"{swap.message}"</p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+        {/* Incoming Requests */}
+        <div>
+          <h3 style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>Incoming Requests</h3>
+          {loading ? (
+            <div>Loading...</div>
+          ) : incomingRequests.length === 0 ? (
+            <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>No incoming requests</div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {incomingRequests.map(req => (
+                <div key={req._id} className="glass-panel" style={{ padding: '1.5rem', borderLeft: `4px solid ${req.status === 'pending' ? 'var(--secondary-color)' : req.status === 'accepted' ? 'var(--success-color)' : 'var(--danger-color)'}` }}>
+                  <p style={{ marginBottom: '0.5rem' }}>
+                    <strong style={{ color: 'var(--primary-color)' }}>{req.requestor.name}</strong> wants to trade for your{' '}
+                    <Link to={`/product/${req.targetListing._id}`} style={{ fontWeight: 'bold' }}>{req.targetListing.title}</Link>
+                  </p>
+                  <p style={{ marginBottom: '1rem' }}>
+                    They are offering: <Link to={`/product/${req.offeredListing._id}`} style={{ fontWeight: 'bold' }}>{req.offeredListing.title}</Link>
+                  </p>
+                  {req.message && (
+                    <div style={{ background: 'var(--surface-color)', padding: '0.75rem', borderRadius: '4px', marginBottom: '1rem', fontSize: '0.9rem', fontStyle: 'italic' }}>
+                      "{req.message}"
+                    </div>
+                  )}
+                  
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 'bold', color: 'var(--text-muted)' }}>Status: {req.status}</span>
+                    {req.status === 'pending' && (
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button onClick={() => handleUpdateStatus(req._id, 'rejected')} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', display: 'flex', gap: '0.25rem' }}>
+                          <X size={16} /> Reject
+                        </button>
+                        <button onClick={() => handleUpdateStatus(req._id, 'accepted')} className="btn btn-primary" style={{ padding: '0.4rem 0.8rem', display: 'flex', gap: '0.25rem' }}>
+                          <Check size={16} /> Accept
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-
-              {swap.status === 'pending' && swap.receiver?._id === user._id && (
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'flex-end' }}>
-                  <button onClick={() => handleUpdateStatus(swap._id, 'rejected')} className="btn btn-secondary" style={{ color: 'var(--danger-color)', borderColor: 'var(--danger-color)' }}>Decline</button>
-                  <button onClick={() => handleUpdateStatus(swap._id, 'accepted')} className="btn btn-primary">Accept Swap</button>
-                </div>
-              )}
+              ))}
             </div>
-          ))
-        )}
+          )}
+        </div>
+
+        {/* Outgoing Requests */}
+        <div>
+          <h3 style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>Outgoing Requests</h3>
+          {loading ? (
+            <div>Loading...</div>
+          ) : outgoingRequests.length === 0 ? (
+            <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>No outgoing requests</div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {outgoingRequests.map(req => (
+                <div key={req._id} className="glass-panel" style={{ padding: '1.5rem', opacity: 0.9 }}>
+                  <p style={{ marginBottom: '0.5rem' }}>
+                    You requested <Link to={`/product/${req.targetListing._id}`} style={{ fontWeight: 'bold' }}>{req.targetListing.title}</Link>{' '}
+                    from <strong style={{ color: 'var(--primary-color)' }}>{req.receiver.name}</strong>
+                  </p>
+                  <p style={{ marginBottom: '1rem' }}>
+                    You offered: <Link to={`/product/${req.offeredListing._id}`} style={{ fontWeight: 'bold' }}>{req.offeredListing.title}</Link>
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 'bold', color: req.status === 'accepted' ? 'var(--success-color)' : req.status === 'rejected' ? 'var(--danger-color)' : 'var(--text-muted)' }}>
+                      Status: {req.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

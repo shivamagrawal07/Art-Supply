@@ -1,40 +1,54 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const { login } = useAuth();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('/api/auth/login', { email, password });
-      localStorage.setItem('user', JSON.stringify(res.data));
-      navigate('/marketplace');
-    } catch (err) {
-      alert(err.response?.data?.message || 'Login failed');
+    setError('');
+    const res = await login(email, password);
+    if (!res.success) {
+      setError(res.message);
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '4rem auto' }} className="animate-fade-in">
-      <div className="glass-panel" style={{ padding: '2.5rem' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }}>
+      <div className="glass-panel animate-fade-in" style={{ padding: '2.5rem', width: '100%', maxWidth: '400px' }}>
         <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Welcome Back</h2>
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+        {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', textAlign: 'center', background: 'rgba(239, 68, 68, 0.1)', padding: '0.5rem', borderRadius: '4px' }}>{error}</div>}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" required placeholder="artist@example.com" />
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Email Address</label>
+            <input 
+              type="email" 
+              className="input-field" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+              placeholder="you@example.com"
+            />
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input-field" required placeholder="••••••••" />
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Password</label>
+            <input 
+              type="password" 
+              className="input-field" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+              placeholder="••••••••"
+            />
           </div>
-          <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', padding: '1rem' }}>Log In</button>
+          <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Login</button>
         </form>
-        <p style={{ marginTop: '1.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-          Don't have an account? <Link to="/register" style={{ color: 'var(--primary-color)' }}>Sign up</Link>
+        <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+          Don't have an account? <Link to="/register" style={{ fontWeight: 600 }}>Sign up</Link>
         </p>
       </div>
     </div>

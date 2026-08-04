@@ -1,38 +1,53 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Palette, RefreshCw, Users } from 'lucide-react';
+import { Palette, Share2, Users } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="animate-fade-in" style={{ textAlign: 'center', padding: '4rem 0' }}>
-      <h1 style={{ fontSize: '4rem', marginBottom: '1rem', lineHeight: '1.1' }}>
-        Create More. <br/><span className="text-gradient">Waste Less.</span>
-      </h1>
-      <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 3rem' }}>
-        Join the premier marketplace for artists to buy, sell, and swap unused art supplies locally. Support sustainability and fuel your creativity.
-      </p>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '5rem' }}>
-        <Link to="/marketplace" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
-          Explore Marketplace <ArrowRight size={20} style={{ marginLeft: '0.5rem' }} />
-        </Link>
-      </div>
+    <div className="animate-fade-in" style={{ padding: '2rem 0' }}>
+      {/* Hero Section */}
+      <section style={{ textAlign: 'center', marginBottom: '5rem' }}>
+        <h1 className="text-gradient" style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>
+          Swap Art Supplies.<br />Fuel Your Creativity.
+        </h1>
+        <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
+          Join the community of artists trading unused materials. Clear your studio, find what you need, and save money while creating sustainably.
+        </p>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+          <Link to="/marketplace" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
+            Explore Marketplace
+          </Link>
+          <Link to="/register" className="btn btn-secondary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
+            Join the Community
+          </Link>
+        </div>
+      </section>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'left' }}>
-        <div className="glass-panel" style={{ padding: '2rem' }}>
-          <Palette color="var(--secondary-color)" size={40} style={{ marginBottom: '1rem' }} />
-          <h3>Premium Supplies</h3>
-          <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Find high-quality paints, canvases, and tools at a fraction of retail prices.</p>
+      {/* Features Section */}
+      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', padding: '0 1rem' }}>
+        <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
+          <div style={{ background: 'var(--surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <Palette size={32} color="var(--primary-color)" />
+          </div>
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>Find Rare Materials</h3>
+          <p style={{ color: 'var(--text-muted)' }}>Discover unique, vintage, or specialized art supplies from other creators.</p>
         </div>
-        <div className="glass-panel" style={{ padding: '2rem' }}>
-          <RefreshCw color="var(--primary-color)" size={40} style={{ marginBottom: '1rem' }} />
-          <h3>Swap & Exchange</h3>
-          <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Have unused materials? Trade them directly with other artists for what you need.</p>
+        
+        <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
+          <div style={{ background: 'var(--surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <Share2 size={32} color="var(--secondary-color)" />
+          </div>
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>Direct Swaps</h3>
+          <p style={{ color: 'var(--text-muted)' }}>Propose trades directly with other artists. No money needs to change hands.</p>
         </div>
-        <div className="glass-panel" style={{ padding: '2rem' }}>
-          <Users color="var(--success-color)" size={40} style={{ marginBottom: '1rem' }} />
-          <h3>Local Community</h3>
-          <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Connect with creative professionals and hobbyists right in your neighborhood.</p>
+
+        <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
+          <div style={{ background: 'var(--surface-hover)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <Users size={32} color="var(--success-color)" />
+          </div>
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>Connect Locally</h3>
+          <p style={{ color: 'var(--text-muted)' }}>Meet up with local artists in your area to exchange supplies and ideas.</p>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
