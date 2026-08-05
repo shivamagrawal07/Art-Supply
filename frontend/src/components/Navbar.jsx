@@ -48,8 +48,8 @@ export default function Navbar() {
             <Link to="/dashboard" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
               <UserIcon size={18} /> Dashboard
             </Link>
-            <button onClick={logout} className="btn btn-secondary" style={{ padding: '0.5rem', border: 'none', background: 'transparent' }} title="Logout">
-              <LogOut size={20} color="var(--danger-color)" />
+            <button onClick={logout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'flex', gap: '0.5rem', alignItems: 'center', color: 'var(--danger-color)' }} title="Logout">
+              <LogOut size={18} /> Logout
             </button>
           </>
         ) : (
