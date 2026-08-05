@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
-import { Plus } from 'lucide-react';
+import { Plus, LogOut } from 'lucide-react';
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [myListings, setMyListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,9 +60,14 @@ export default function Dashboard() {
     <div className="animate-fade-in">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h2>My Dashboard</h2>
-        <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-primary" style={{ display: 'flex', gap: '0.5rem' }}>
-          <Plus size={20} /> {showAddForm ? 'Cancel' : 'Add Listing'}
-        </button>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <Plus size={20} /> {showAddForm ? 'Cancel' : 'Add Listing'}
+          </button>
+          <button onClick={logout} className="btn btn-secondary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', color: 'var(--danger-color)' }}>
+            <LogOut size={18} /> Logout
+          </button>
+        </div>
       </div>
 
       {showAddForm && (
