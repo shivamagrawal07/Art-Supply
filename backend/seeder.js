@@ -16,8 +16,8 @@ const listings = [
   { title: 'Winsor & Newton Oil Paints (Set of 10)', description: 'Hardly used, moving to acrylics. Perfect for professional canvas work.', category: 'Paints', condition: 'used', price: 45, images: ['/holbein_gouache_1786024795719.png'] },
   { title: 'Heavy Body Golden Acrylics', description: 'Titanium white and Ultramarine blue almost full tubes.', category: 'Paints', condition: 'used', price: 22, images: ['/acrylic_paint_1786024807375.png'] },
   { title: 'Holbein Gouache Set 24 Colors', description: 'Vibrant gouache set. Only opened once to swatch colors.', category: 'Paints', condition: 'new', price: 60, images: ['/watercolor_set_1786024818091.png'] },
-  { title: 'Schmincke Horadam Watercolor Pan', description: 'Half pan set. Lightly used, plenty of pigment left.', category: 'Paints', condition: 'used', price: 85, images: ['https://images.unsplash.com/photo-1514197992770-4db0b8474d2b?w=600&h=400&fit=crop'] },
-  { title: 'Liquitex Basics Acrylic Paint Set', description: 'Great for beginners. 36 colors, completely sealed.', category: 'Paints', condition: 'new', price: 35, images: ['https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=400&fit=crop'] },
+  { title: 'Schmincke Horadam Watercolor Pan', description: 'Half pan set. Lightly used, plenty of pigment left.', category: 'Paints', condition: 'used', price: 85, images: ['/schmincke_watercolor_1786025337367.png'] },
+  { title: 'Liquitex Basics Acrylic Paint Set', description: 'Great for beginners. 36 colors, completely sealed.', category: 'Paints', condition: 'new', price: 35, images: ['/liquitex_acrylic_1786025348177.png'] },
 
   // Brushes
   { title: 'Princeton Velvetouch Brush Set', description: 'Great for watercolor and acrylics. Barely used.', category: 'Brushes', condition: 'used', price: 15, images: ['https://images.unsplash.com/photo-1596461404969-9cea37505e94?w=600&h=400&fit=crop'] },
